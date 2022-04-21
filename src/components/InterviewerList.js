@@ -4,15 +4,14 @@ import classNames from "classnames";
 import InterviewerListItem from "components/InterviewerListItem.js";
 
 export default function InterviewerList(props) {
-  const map = props.interviewers.map((interviewerObj) => {
+  const interviewers = props.interviewers.map((interviewer) => {
     return (
       <InterviewerListItem
-        key={interviewerObj.id}
-        id={interviewerObj.id}
-        name={interviewerObj.name}
-        avatar={interviewerObj.avatar}
-        selected={interviewerObj.id === props.interviewer}
-        setInterviewer={props.setInterviewer}
+        key={interviewer.id}
+        name={interviewer.name}
+        avatar={interviewer.avatar}
+        selected={interviewer.id === props.value}
+        setInterviewer={() => props.onChange(interviewer.id)}
       />
     );
   });
@@ -20,7 +19,7 @@ export default function InterviewerList(props) {
   return (
     <section className="interviewers">
       <h4 className="interviewers__header text--light">Interviewer</h4>
-      <ul className="interviewers__list">{map}</ul>
+      <ul className="interviewers__list">{interviewers}</ul>
     </section>
   );
 }
