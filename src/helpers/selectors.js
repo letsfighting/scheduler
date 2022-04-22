@@ -1,4 +1,4 @@
-export function getAppointmentsForDay(state, day) {
+export default function getAppointmentsForDay(state, day) {
   const stepOne = () => {
     for (const eachDay of state["days"]) {
       if (eachDay["name"] === day) {
