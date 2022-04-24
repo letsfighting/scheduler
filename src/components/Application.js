@@ -4,7 +4,7 @@ import axios from "axios";
 import "components/Application.scss";
 import DayList from "components/DayList.js";
 import Appointment from "components/Appointment/index.js";
-import getAppointmentsForDay from "helpers/selectors.js";
+import { getAppointmentsForDay, getInterview } from "helpers/selectors.js";
 
 export default function Application(props) {
   const [state, setState] = useState({
@@ -12,6 +12,7 @@ export default function Application(props) {
     days: [],
     // you may put the line below, but will have to remove/comment hardcoded appointments variable
     appointments: {},
+    interviewers: {},
   });
 
   const setDay = (day) => setState({ ...state, day });
@@ -19,23 +20,39 @@ export default function Application(props) {
   const dailyAppointments = getAppointmentsForDay(state, state.day);
   const appMapped = dailyAppointments.map((appointment) => {
     console.log("dailyapp: ", dailyAppointments);
-    return <Appointment key={appointment.id} {...appointment} />;
+    console.log("state: ", state);
+    //return <Appointment key={appointment.id} {...appointment} />;
+
+    const interview = getInterview(state, appointment.interview);
+    console.log("interview: ", interview);
+
+    return (
+      <Appointment
+        key={appointment.id}
+        id={appointment.id}
+        time={appointment.time}
+        interview={interview}
+      />
+    );
   });
 
   useEffect(() => {
     const testURL = `/api/days`;
-    Promise.all([axios.get("/api/days"), axios.get("/api/appointments")]).then(
-      (all) => {
-        console.log("first: ", all[0]); // first
-        console.log("ssecond: ", all[1]); // second
-        console.log(all); // second
-        setState((prev) => ({
-          ...prev,
-          days: all[0]["data"],
-          appointments: all[1]["data"],
-        }));
-      }
-    );
+    Promise.all([
+      axios.get("/api/days"),
+      axios.get("/api/appointments"),
+      axios.get("/api/interviewers"),
+    ]).then((all) => {
+      console.log("first: ", all[0]); // first
+      console.log("ssecond: ", all[1]); // second
+      console.log("third ", all[2]); // second
+      setState((prev) => ({
+        ...prev,
+        days: all[0]["data"],
+        appointments: all[1]["data"],
+        interviewers: all[2]["data"],
+      }));
+    });
   }, []);
 
   return (
