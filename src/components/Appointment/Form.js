@@ -18,7 +18,9 @@ export default function Form(props) {
   };
 
   const onSave = () => {
-    props.onSave([student, interviewer]);
+    console.log("finding interviewer: ", props.interviewer);
+    console.log("save interviewer: ", interviewer);
+    props.onSave(student, interviewer);
   };
 
   return (

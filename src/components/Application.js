@@ -23,28 +23,35 @@ export default function Application(props) {
   //const setDays = (days) => setState((prev) => ({ ...prev, days }));
 
   const bookInterview = (id, interview) => {
-    console.log(id, interview);
+    console.log("what: ", id, interview);
     const appointment = {
       ...state.appointments[id],
-      interivew: { ...interview },
+      interview: { ...interview },
     };
+
+    console.log("bookInterview appointment: ", appointment);
 
     const appointments = {
       ...state.appointments,
       [id]: appointment,
     };
 
-    setState((prev) => ({ ...prev, appointments }));
+    console.log("bookInterview appointments: ", appointments);
+
+    setState({
+      ...state,
+      appointments,
+    });
   };
 
   const dailyAppointments = getAppointmentsForDay(state, state.day);
   const appMapped = dailyAppointments.map((appointment) => {
-    console.log("dailyapp: ", dailyAppointments);
-    console.log("state: ", state);
+    //console.log("dailyapp: ", dailyAppointments);
+    //console.log("state: ", state);
     //return <Appointment key={appointment.id} {...appointment} />;
 
     const interview = getInterview(state, appointment.interview);
-    console.log("interview: ", interview);
+    //console.log("interview: ", interview);
 
     return (
       <Appointment
