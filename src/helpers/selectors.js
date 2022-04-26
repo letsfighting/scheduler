@@ -14,8 +14,12 @@ export const getInterview = (state, interview) => {
         student: interview.student,
         interviewer: {
           id: interview.interviewer,
-          name: state.interviewers[interview.interviewer].name,
-          avatar: state.interviewers[interview.interviewer].avatar,
+          name: state.interviewers[interview.interviewer]
+            ? state.interviewers[interview.interviewer].name
+            : "",
+          avatar: state.interviewers[interview.interviewer]
+            ? state.interviewers[interview.interviewer].avatar
+            : "",
         },
       }
     : null;
