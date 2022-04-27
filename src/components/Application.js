@@ -23,7 +23,8 @@ export default function Application(props) {
   //const setDays = (days) => setState((prev) => ({ ...prev, days }));
 
   const bookInterview = (id, interview) => {
-    console.log("what: ", id, interview);
+    //console.log("what: ", id, interview);
+
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview },
@@ -38,12 +39,16 @@ export default function Application(props) {
 
     //console.log("bookInterview appointments: ", appointments);
 
-    setState({
-      ...state,
-      appointments,
-    });
-
-    axios.put(`/api/appointments/${id}`, { interview: { ...interview } });
+    axios
+      .put(`/api/appointments/${id}`, { interview: { ...interview } })
+      .then((resp) => {
+        console.log("resp: ", resp);
+        if (resp.status === 204)
+          setState({
+            ...state,
+            appointments,
+          });
+      });
   };
 
   const dailyAppointments = getAppointmentsForDay(state, state.day);
