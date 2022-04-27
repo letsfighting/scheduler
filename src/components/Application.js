@@ -22,7 +22,7 @@ export default function Application(props) {
     //return <Appointment key={appointment.id} {...appointment} />;
 
     const interview = getInterview(state, appointment.interview);
-    //console.log("interview: ", interview);
+    console.log("state: ", state);
 
     return (
       <Appointment

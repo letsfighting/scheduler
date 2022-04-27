@@ -35,12 +35,41 @@ export default function useApplicationData() {
             ...state,
             appointments,
           });
+          setState((prev) => {
+            dayRetriever(state.day).spots -= 1;
+            return {
+              ...prev,
+            };
+          });
         }
       });
   };
 
   const deleteAppointment = (id) => {
-    return axios.delete(`/api/appointments/${id}`);
+    return axios.delete(`/api/appointments/${id}`).then(() => {
+      setState((prev) => {
+        dayRetriever(state.day).spots += 1;
+        return {
+          ...prev,
+        };
+      });
+    });
+  };
+
+  const dayRetriever = (daySelected) => {
+    for (const day of state.days) {
+      if (day.name === daySelected) {
+        return day;
+      }
+    }
+  };
+
+  const spotSub = (daySelected) => {
+    return state.days[daySelected].spots - 1;
+  };
+
+  const spotAdd = (daySelected) => {
+    return state.days[daySelected].spots + 1;
   };
 
   useEffect(() => {
