@@ -39,17 +39,23 @@ export default function Application(props) {
 
     //console.log("bookInterview appointments: ", appointments);
 
-    axios
+    return axios
       .put(`/api/appointments/${id}`, { interview: { ...interview } })
       .then((resp) => {
         console.log("resp: ", resp);
-        if (resp.status === 204)
+        if (resp.status === 204) {
           setState({
             ...state,
             appointments,
           });
+        }
       });
   };
+
+  const deleteAppointment = (id) => {
+    return axios.delete(`/api/appointments/${id}`);
+  };
+  // }
 
   const dailyAppointments = getAppointmentsForDay(state, state.day);
   const appMapped = dailyAppointments.map((appointment) => {
@@ -68,6 +74,7 @@ export default function Application(props) {
         interview={interview}
         interviewers={getInterviewersForDay(state, state.day)}
         bookInterview={bookInterview}
+        deleteAppointment={deleteAppointment}
       />
     );
   });
