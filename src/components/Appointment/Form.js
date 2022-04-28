@@ -6,10 +6,12 @@ import classNames from "classnames";
 export default function Form(props) {
   const [student, setStudent] = useState(props.student || "");
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
+  const [error, setError] = useState("");
 
   const reset = () => {
     setStudent("");
     setInterviewer(null);
+    setError("");
   };
 
   const cancel = () => {
@@ -17,11 +19,26 @@ export default function Form(props) {
     reset();
   };
 
-  const onSave = () => {
+  // const onSave = () => {
+  //   console.log("finding interviewer: ", props.interviewer);
+  //   console.log("save interviewer: ", interviewer);
+  //   props.onSave(student, interviewer);
+  // };
+
+  function validate() {
+    if (student === "") {
+      setError("Student name cannot be blank");
+      return;
+    }
+    if (interviewer === null) {
+      setError("Please select an interviewer");
+      return;
+    }
     console.log("finding interviewer: ", props.interviewer);
     console.log("save interviewer: ", interviewer);
+    setError("");
     props.onSave(student, interviewer);
-  };
+  }
 
   return (
     <main className="appointment__card appointment__card--create">
@@ -36,7 +53,9 @@ export default function Form(props) {
             onChange={(event) => {
               setStudent(event.target.value);
             }}
+            data-testid="student-name-input"
           />
+          <section className="appointment__validation">{error}</section>
         </form>
         <InterviewerList
           interviewers={props.interviewers}
@@ -49,7 +68,7 @@ export default function Form(props) {
           <Button danger onClick={cancel}>
             Cancel
           </Button>
-          <Button confirm onClick={onSave}>
+          <Button confirm onClick={validate}>
             Save
           </Button>
         </section>
