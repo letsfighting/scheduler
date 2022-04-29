@@ -21,3 +21,8 @@ npm test
 ```sh
 npm run storybook
 ```
+
+## Screenshots
+
+!["Creating an appointment"](https://github.com/letsfighting/scheduler/blob/master/docs/appointment-form.JPG?raw=true)
+!["Deleting an appointment"](https://github.com/letsfighting/scheduler/blob/master/docs/appointment-delete.JPG?raw=true)
