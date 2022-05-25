@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function useVisualMode(initial) {
   const [mode, setMode] = useState(initial);
@@ -9,6 +9,7 @@ export default function useVisualMode(initial) {
       history.pop();
       setHistory(history);
       setHistory((history) => [...history, newMode]);
+
       setMode(newMode);
     } else {
       setHistory((history) => [...history, newMode]);

@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 export default function useApplicationData() {
@@ -45,6 +45,34 @@ export default function useApplicationData() {
       });
   };
 
+  const editInterview = (id, interview) => {
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview },
+    };
+
+    //console.log("bookInterview appointment: ", appointment);
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment,
+    };
+
+    //console.log("bookInterview appointments: ", appointments);
+
+    return axios
+      .put(`/api/appointments/${id}`, { interview: { ...interview } })
+      .then((resp) => {
+        console.log("resp: ", resp);
+        if (resp.status === 204) {
+          setState({
+            ...state,
+            appointments,
+          });
+        }
+      });
+  };
+
   const deleteAppointment = (id) => {
     return axios.delete(`/api/appointments/${id}`).then(() => {
       setState((prev) => {
@@ -64,16 +92,16 @@ export default function useApplicationData() {
     }
   };
 
-  const spotSub = (daySelected) => {
-    return state.days[daySelected].spots - 1;
-  };
+  // const spotSub = (daySelected) => {
+  //   return state.days[daySelected].spots - 1;
+  // };
 
-  const spotAdd = (daySelected) => {
-    return state.days[daySelected].spots + 1;
-  };
+  // const spotAdd = (daySelected) => {
+  //   return state.days[daySelected].spots + 1;
+  // };
 
   useEffect(() => {
-    const testURL = `/api/days`;
+    // const testURL = `/api/days`;
     Promise.all([
       axios.get("/api/days"),
       axios.get("/api/appointments"),
@@ -91,7 +119,7 @@ export default function useApplicationData() {
     });
   }, []);
 
-  return { state, setDay, bookInterview, deleteAppointment };
+  return { state, setDay, bookInterview, editInterview, deleteAppointment };
 }
 
 // export default function useApplicationData(initial) {

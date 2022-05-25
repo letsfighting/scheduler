@@ -48,20 +48,52 @@ export default function Appointment(props) {
     props
       .bookInterview(props.id, interview)
       .then(() => transition(SHOW))
-      .catch(() => transition(ERROR_SAVE));
+      .catch(() => transition(ERROR_SAVE, true));
+  };
+
+  const editSave = (name, interviewer) => {
+    console.log("editsave function name: ", name);
+    console.log("editsave function interviewer: ", interviewer);
+
+    transition(SAVING);
+
+    const interview = {
+      student: name,
+      interviewer,
+    };
+
+    // let promise = new Promise((resolve) => {
+    //   setTimeout(function () {
+    //     resolve(props.bookInterview(props.id, interview));
+    //   }, 1000);
+    // });
+
+    // promise.then(function (data) {
+    //   //console.log("data: ", data);
+    //   transition(SHOW);
+    // });
+
+    props
+      .editInterview(props.id, interview)
+      .then(() => transition(SHOW))
+      .catch(() => transition(ERROR_SAVE, true));
   };
 
   const deleteAppointment = (id) => {
-    transition(DELETING);
+    transition(DELETING, true);
 
     props
       .deleteAppointment(id)
       .then(() => transition(EMPTY))
-      .catch(() => transition(ERROR_DELETE));
+      .catch(() => transition(ERROR_DELETE, true));
   };
 
   const transitionToShow = () => {
     transition(SHOW);
+  };
+
+  const transitionToEdit = () => {
+    transition(EDIT);
   };
 
   return (
@@ -96,15 +128,16 @@ export default function Appointment(props) {
       )}
       {mode === EDIT && (
         <Form
+          interviewer={props.interview.interviewer.id}
           interviewers={props.interviewers}
           onCancel={back}
-          onSave={save}
+          onSave={editSave}
           student={props.interview ? props.interview.student : ""}
         />
       )}
       {mode === ERROR_SAVE && (
         <Error
-          onClose={() => transitionToShow()}
+          onClose={() => transitionToEdit()}
           message="Error encountered while saving"
         />
       )}
