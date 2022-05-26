@@ -20,9 +20,10 @@ export default function useVisualMode(initial) {
 
   function back() {
     if (history.length > 1) {
-      history.pop();
-      setMode(history.slice(-1)[0]);
-      setHistory(history);
+      const array = [...history];
+      array.pop();
+      setMode(array.slice(-1)[0]);
+      setHistory(array);
     }
   }
 

@@ -88,12 +88,13 @@ export default function Appointment(props) {
       .catch(() => transition(ERROR_DELETE, true));
   };
 
-  const transitionToShow = () => {
-    transition(SHOW);
-  };
+  // const transitionToShow = () => {
+  //   transition(SHOW);
+  // };
 
   const transitionToEdit = () => {
     transition(EDIT);
+    back();
   };
 
   return (
@@ -128,7 +129,7 @@ export default function Appointment(props) {
       )}
       {mode === EDIT && (
         <Form
-          interviewer={props.interview.interviewer.id}
+          interviewer={props.interview ? props.interview.interviewer.id : null}
           interviewers={props.interviewers}
           onCancel={back}
           onSave={editSave}
@@ -142,10 +143,7 @@ export default function Appointment(props) {
         />
       )}
       {mode === ERROR_DELETE && (
-        <Error
-          onClose={() => transitionToShow()}
-          message="Error encountered while deleting"
-        />
+        <Error onClose={back} message="Error encountered while deleting" />
       )}
     </article>
   );
