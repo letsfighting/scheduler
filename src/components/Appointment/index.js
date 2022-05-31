@@ -88,9 +88,10 @@ export default function Appointment(props) {
       .catch(() => transition(ERROR_DELETE, true));
   };
 
-  // const transitionToShow = () => {
-  //   transition(SHOW);
-  // };
+  const transitionToShow = () => {
+    transition(SHOW);
+    back();
+  };
 
   const transitionToEdit = () => {
     transition(EDIT);
@@ -143,7 +144,10 @@ export default function Appointment(props) {
         />
       )}
       {mode === ERROR_DELETE && (
-        <Error onClose={back} message="Error encountered while deleting" />
+        <Error
+          onClose={() => transitionToShow()}
+          message="Error encountered while deleting"
+        />
       )}
     </article>
   );
